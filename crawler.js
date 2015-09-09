@@ -7,7 +7,7 @@ var Xray = require('x-ray'),
 
 var crawler = function() {};
 
-crawler.prototype.getNewEpisodesList = function() {
+crawler.prototype.getRecentEpisodeList = function() {
     return new Promise(function (resolve, reject) {
         x('http://youtubeowaraitv.blog32.fc2.com/', 'div#mainBlock div.index_area div a', [{
             link: '@href',
@@ -33,8 +33,24 @@ crawler.prototype.getNewEpisodesList = function() {
         });
     });
 };
+crawler.prototype.getEpisodeTitle = function(episode) {
+    return new Promise(function(resolve, reject) {
+        x(episode.link, 'div#mainBlock div.mainEntryBody')(function (err, body) {
+            if (err) throw new Error(err);
 
-crawler.prototype.getEpisodeDetail = function(episode) {
+            var matchArr = body.match(/201\d/g);
+
+            var title = episode.title;
+            if (matchArr.length > 0) {
+                title = body.substring(0, body.indexOf(matchArr[0])).trim();
+            }
+
+            resolve(title);
+        });
+    });
+};
+
+crawler.prototype.getEpisodeVideoList = function(episode) {
     return new Promise(function (resolve, reject) {
         x(episode.link, 'div#mainBlock div.mainEntryMore a', [{
             link: '@href',
@@ -43,7 +59,7 @@ crawler.prototype.getEpisodeDetail = function(episode) {
             if (err) throw new Error(err);
 
             // 괄호가 있는 것들만 replace해서 추리고, 나머지는 null
-            episode.videoList = _.chain(list)
+            var videoList = _.chain(list)
                 .map(function(video) {
                     if (video.source.indexOf('&#x3010;') > -1) {
                         video.source = video.source.replace(/(&#x3010;|&#x3011;)/g, '');
@@ -54,9 +70,10 @@ crawler.prototype.getEpisodeDetail = function(episode) {
                 })
                 .reject(function(video) {
                     return video === null;
-                });
+                })
+                .value();
 
-            resolve(episode);
+            resolve(videoList);
         });
     });
 };
