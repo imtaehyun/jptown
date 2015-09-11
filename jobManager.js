@@ -27,7 +27,7 @@ database.getJobList().then(function(jobList) {
                 logger.debug(response);
             });
 
-            logger.info('=== [JOB] CollectNewEpisodes 종료 ===');
+            logger.info('=== [JOB] ' + job.jobName + ' 종료 ===');
         }
     });
 });
