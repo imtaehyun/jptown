@@ -2,6 +2,7 @@
   "dependencies": {
     "bluebird": "^2.9.34",
     "hapi": "^9.2.0",
+    "later": "^1.1.9",
     "moment": "^2.10.6",
     "node-parse-api": "^0.3.8",
     "underscore": "^1.8.3",
