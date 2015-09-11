@@ -32,14 +32,19 @@ job.collectLatestEpisodes = function() {
 
 job.updateVideoList = function() {
 
+    var condStartDate = moment().subtract(2, 'days').hours(0).minutes(0).seconds(0).format(),
+        condEndDate = moment().hours(0).minutes(0).seconds(0).subtract(1, 'seconds').format();
+
     var condition = {
         createdAt: {
-            '$gte': moment().subtract(2, 'days').hours(0).minutes(0).seconds(0).format(),
-            '$lte': moment().hours(0).minutes(0).seconds(0).subtract(1, 'seconds').format()
+            '$gte': condStartDate,
+            '$lte': condEndDate
         }
     };
 
-    database.getEpisodeList(condition).map(function(episode) {
+    database.getEpisodeList(condition).then(function(episodeList) {
+        logger.info('대상: ' + condStartDate + ' ~ ' + condEndDate + ' ' + episodeList.length + '건');
+    }).map(function(episode) {
         return crawler.getEpisodeVideoList(episode).then(function(videoList) {
             if (episode.videoList.length < videoList.length) {
                 episode.videoList = videoList;
