@@ -5,9 +5,13 @@
     "later": "^1.1.9",
     "moment": "^2.10.6",
     "node-parse-api": "^0.3.8",
+    "react": "^0.13.3",
     "underscore": "^1.8.3",
     "winston": "^1.0.1",
     "winston-papertrail": "^1.0.1",
     "x-ray": "^2.0.2"
+  },
+  "devDependencies": {
+    "webpack": "^1.12.1"
   }
 }
