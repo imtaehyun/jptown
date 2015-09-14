@@ -35,6 +35,20 @@ db.prototype.getEpisodeList = function(condition) {
     });
 };
 
+db.prototype.getEpisodeList = function(page) {
+    var self = this;
+    var pageLimit = 10;
+    var skip = (page - 1) * pageLimit;
+
+    return new Promise(function(resolve, reject) {
+        self.parse.find('Video', { order: 'videoId', skip: skip, limit: pageLimit }, function(err, response) {
+            if (err) throw new Error(err);
+
+            resolve(response.results);
+        });
+    });
+};
+
 db.prototype.addEpisode = function(episode) {
     var self = this;
 
