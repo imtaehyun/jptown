@@ -3,14 +3,15 @@ var React = require('react'),
 
 var EpisodeList = React.createClass({
     render: function() {
-        var list = [];
-        this.props.list.forEach(function(episode) {
-            list.push(<Episode episode={episode} />);
+
+        var episodeList = this.props.list.map(function(episode) {
+            return <Episode episode={episode} />;
         });
+
         return (
-            <div className="list-group">
-                {list}
-            </div>
+            <ul className="list-group">
+                {episodeList}
+            </ul>
         )
     }
 });

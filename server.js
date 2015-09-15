@@ -34,9 +34,8 @@ server.route({
     path: '/episodes/{page?}',
     handler: function (request, reply) {
         var page = request.params.page ? request.params.page : 1;
-        console.log(page);
+
         database.getEpisodeList(page).then(function(results) {
-            console.log(results);
             reply(results);
         }).catch(function(err) {
             reply(err);
